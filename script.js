@@ -1,6 +1,6 @@
 (function($) {
-
     $(function() {
+
 
 
         /*
@@ -9,32 +9,26 @@
 
         var documentWidthWithScroll = 0;
         var documentWidthWithoutScroll = 0;
-        var documentScrollWidth = 0;
-        var currentHtmlPadding = 0;
+        var scrollWidth = 0;
 
         var $html = $('html');
 
 
         function lockPage() {
-
-            if ( ! $html.hasClass('locked') ) {
+            if ( ! $html.hasClass('html-lock') ) {
                 documentWidthWithScroll = $(window).width();
-                currentHtmlPadding = parseInt( $html.css('padding-right'), 10 );
-                $html.addClass('locked');
+                $html.addClass('html-lock');
                 documentWidthWithoutScroll = $(window).width();
-                documentScrollWidth = documentWidthWithoutScroll - documentWidthWithScroll;
-                $html.css( 'padding-right', (currentHtmlPadding + documentScrollWidth) + 'px' );
-                console.log( documentWidthWithoutScroll );
+                $html.css( 'padding-right', (documentWidthWithoutScroll - documentWidthWithScroll) + 'px' );
             }
         }
 
         function unlockPage() {
-            if ( $html.hasClass('locked') ) {
+            if ( $html.hasClass('html-lock') ) {
                 $html.css( 'padding-right', '' );
-                $html.removeClass('locked');
+                $html.removeClass('html-lock');
             }
         }
-
 
 
 
@@ -47,19 +41,15 @@
             popup.fadeIn();
         }
 
-
         function popupHide(popup){
-            if( ! popup ) {               //in case of Esc or something
-                popup = $('.gl-popup');
+            if( ! popup ) {                //in case of Esc or something
+                popup = $('.popup');
             }
 
-            popup.fadeOut(300,function(){ //hide popup THAN show page
+            popup.fadeOut(300,function(){  //hide popup THAN unlock page
                 unlockPage();
             });
-
         }
-
-
 
         /* show popup by handler click */
 
@@ -71,20 +61,22 @@
 
         /* hide popup by window close click */
 
-        $('.gl-popup__container__viewport__slot__close').on('click', function(event){
+        $('.popup__close').on('click', function(event){
             event.preventDefault();
-            popupHide( $(this).parents('.gl-popup') );
+            popupHide( $(this).parents('.popup') );
         });
 
 
-        /* hide popup by overlay click */
+        /* hide popup by overlay click ( goo.gl/SJG2Hw ) */
 
-        $('.gl-popup__container__overlay').on('click', function(){
-            popupHide( $(this).parents('.gl-popup') );
+        $('.popup').on('click', function(event) {
+            if (!$(event.target).closest('.popup__slot').length) {
+                popupHide( $('.popup') );
+            }
         });
 
 
-        /* hide popup by Esc push */
+        /* hide popup by Esc press */
 
         $(document).on('keyup', function(event) {
             if (event.keyCode == 27) {
@@ -93,7 +85,5 @@
         });
 
     });
-
-
 })(jQuery);
 
