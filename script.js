@@ -39,6 +39,7 @@
         function popupShow(popup){
             lockPage();
             popup.fadeIn();
+            popup.scrollTop(0);
         }
 
         function popupHide(popup){
