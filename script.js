@@ -54,15 +54,15 @@
 
         /* show popup by handler click */
 
-        $('[data-popup]').on('click', function(event){
+        $('[data-popup-handler]').on('click', function(event){
             event.preventDefault();
-            popupShow( $($(this).data('popup')) );
+            popupShow( $($(this).attr('href')) );
         });
 
 
         /* hide popup by window close click */
 
-        $('.popup__close').on('click', function(event){
+        $('[data-close-popup]').on('click', function(event){
             event.preventDefault();
             popupHide( $(this).parents('.popup') );
         });
